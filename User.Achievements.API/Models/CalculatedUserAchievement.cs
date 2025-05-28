@@ -1,10 +1,10 @@
-using User.Achievements.API.Enums;
+using User.Achievements.API.Models.Enums;
 
 namespace User.Achievements.API.Models;
 
-public class CalculatedUserAchievement
+public class CalculatedUserAchievementForGame
 {
     public int UserId { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public AchievementLevel Level { get; set; }
+    public int GameId { get; set; }
+    public int AchievementPercentage { get; set; }
 }
