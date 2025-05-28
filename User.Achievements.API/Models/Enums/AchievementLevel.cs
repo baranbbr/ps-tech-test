@@ -1,4 +1,4 @@
-namespace User.Achievements.API.Enums;
+namespace User.Achievements.API.Models.Enums;
 
 public enum AchievementLevel
 {

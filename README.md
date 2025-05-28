@@ -17,7 +17,9 @@ Platinum = owns >= 50 games + 100% achievements in each
 
 ## Design decisions
 
--   `API > Enums > AchievementLevel.cs` - have a base value `None = 0` due to the default value of Enums in CSharp being 0 - hence we don't want a default valid value.
+-   `API > Models > Enums > AchievementLevel.cs` - have a base value `None = 0` due to the default value of Enums in CSharp being 0 - hence we don't want a default valid value.
+
+-   `API > Services > UsersService` - casting to float within the division to calculate average game achievement completion as the division will not always be integer. Then converting back to integer after multiplying by 100.
 
 ## Random Ideas
 

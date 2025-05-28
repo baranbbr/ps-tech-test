@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using User.Achievements.API.Clients;
 using User.Achievements.API.Services;
 
 namespace User.Achievements.API.Controllers;
@@ -22,8 +21,7 @@ public class UsersController : ControllerBase
     [Route("GetById/{Id}")]
     public async Task<IActionResult> GetByUserId(int Id)
     {
-        var userLibrary = await _usersService.GetUsersLibrary(Id);
-        return Ok(userLibrary);
+        return Ok();
     }
 
     [HttpGet]
