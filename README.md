@@ -1,4 +1,4 @@
-# Account Achievements Aggregator Task
+# User Achievements Aggregator Task
 
 ## Required info to calculate account achievement level:
 
@@ -14,6 +14,10 @@ Bronze = owns > 10 games
 Silver = owns >= 10 games + 75% achivements in each
 Gold = owns >= 25 games + 80% achievements in each
 Platinum = owns >= 50 games + 100% achievements in each
+
+## Design decisions
+
+-   `API > Enums > AchievementLevel.cs` - have a base value `None = 0` due to the default value of Enums in CSharp being 0 - hence we don't want a default valid value.
 
 ## Random Ideas
 
