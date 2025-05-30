@@ -8,14 +8,17 @@ using User.Achievements.API.Models;
 public class UserApiClient
 {
     private readonly HttpClient _httpClient;
+    private readonly ILogger<UserApiClient> _logger;
+
     private readonly JsonSerializerOptions _jsonOptions = new()
     {
         PropertyNameCaseInsensitive = true,
     };
 
-    public UserApiClient(HttpClient httpClient)
+    public UserApiClient(HttpClient httpClient, ILogger<UserApiClient> logger)
     {
         _httpClient = httpClient;
+        _logger = logger;
     }
 
     public async Task<List<User>> GetAllUsers()
@@ -37,13 +40,14 @@ public class UserApiClient
         }
         catch (HttpRequestException ex)
         {
-            // TODO: log the exception or handle it as needed
-            throw new Exception("Error fetching users from API", ex);
+            _logger.LogError(ex, "Error fetching users from API.");
+            return new List<User>();
         }
     }
 
     public async Task<User> GetUserById(int Id)
     {
+        User user = new();
         try
         {
             string requestUri = $"/users/{Id}";
@@ -56,12 +60,12 @@ public class UserApiClient
                 return JsonSerializer.Deserialize<User>(content, _jsonOptions) ?? new User();
             }
 
-            return new User();
+            return user;
         }
         catch (HttpRequestException ex)
         {
-            // TODO: log the exception or handle it as needed
-            throw new Exception("Error fetching user from API", ex);
+            _logger.LogError(ex, "Error fetching user by ID: {UserId} from API.", Id);
+            return user;
         }
     }
 
@@ -84,8 +88,12 @@ public class UserApiClient
         }
         catch (HttpRequestException ex)
         {
-            // TODO: log the exception or handle it as needed
-            throw new Exception("Error fetching user library from API", ex);
+            _logger.LogError(
+                ex,
+                "Error fetching user library from API for user ID: {UserId}",
+                userId
+            );
+            return new UsersLibrary();
         }
     }
 
@@ -108,8 +116,13 @@ public class UserApiClient
         }
         catch (HttpRequestException ex)
         {
-            // TODO: log the exception or handle it as needed
-            throw new Exception("Error fetching user game achievements from API", ex);
+            _logger.LogError(
+                ex,
+                "Error fetching user game achievements from API for user ID: {UserId}, game ID: {GameId}",
+                userId,
+                gameId
+            );
+            return new UserAchievements();
         }
     }
 }
