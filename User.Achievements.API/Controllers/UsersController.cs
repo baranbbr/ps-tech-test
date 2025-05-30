@@ -17,17 +17,26 @@ public class UsersController : ControllerBase
         _usersService = usersService;
     }
 
-    [HttpGet]
-    [Route("GetById/{Id}")]
-    public async Task<IActionResult> GetByUserId(int Id)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetByUserId(int id)
     {
-        return Ok();
+        _logger.LogInformation("Request received to get user by ID: {id}", id);
+        var user = await _usersService.GetByUserId(id);
+        if (user.UserId <= 0)
+        {
+            return NotFound();
+        }
+
+        return Ok(user);
     }
 
     [HttpGet]
-    [Route("GetAllUsers")]
     public async Task<IActionResult> GetAllUsers()
     {
-        return Ok(await _usersService.GetAllUsers());
+        _logger.LogInformation("Request received to get all users.");
+        var users = await _usersService.GetAllUsers();
+        if (users == null || users.Count == 0)
+            return NoContent();
+        return Ok(users);
     }
 }
