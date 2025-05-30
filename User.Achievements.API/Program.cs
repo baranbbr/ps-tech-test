@@ -6,9 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddTransient<IUsersService, UsersService>();
 builder.Services.AddHttpClient<UserApiClient>(client =>
 {
-    client.BaseAddress = new Uri(
-        builder.Configuration.GetSection("UsersApiDetails").GetValue<string>("BaseUrl")!
-    );
+    client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("UsersApiBaseUrl")!);
 });
 
 builder.Services.AddLogging(logging =>
