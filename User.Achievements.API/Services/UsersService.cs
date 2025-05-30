@@ -8,43 +8,34 @@ using User.Achievements.API.Models.DTOs;
 public class UsersService : IUsersService
 {
     private readonly UserApiClient _apiClient;
+    private readonly ILogger<UsersService> _logger;
 
-    public UsersService(UserApiClient apiClient)
+    public UsersService(UserApiClient apiClient, ILogger<UsersService> logger)
     {
         _apiClient = apiClient;
+        _logger = logger;
     }
 
-    /// <summary>
-    /// Gets all users and calculates their average achievement level.
-    /// </summary>
-    /// <returns>A list of UserAchievementLevelDto containing user IDs and their achievement levels.</returns>
     public async Task<List<UserAchievementLevelDto>> GetAllUsers()
     {
-        // get all users
-        // for each user, get library
-        // for each user library, calculate achievement percentage
         var users = await _apiClient.GetAllUsers();
-        var userGameAchievements = new List<CalculatedUserAchievementForGame>();
-        var userAverageAchievements = new List<UserAverageAchievement>();
+        var result = new List<UserAchievementLevelDto>();
+
         foreach (var user in users)
         {
-            var userAchievements = await GetAchievementsForUser(user.Id);
-            userGameAchievements.AddRange(userAchievements);
-
-            if (userAchievements.Count > 0)
+            var dto = await GetUserAchievementLevelDto(user.Id);
+            if (dto.UserId > 0)
             {
-                userAverageAchievements.Add(CalculateUserAverageAchievement(userAchievements));
+                result.Add(dto);
             }
         }
 
-        return userAverageAchievements
-            .Select(x => new UserAchievementLevelDto(x.UserId, x.Level.ToString()))
-            .ToList();
+        return result;
     }
 
-    public async Task<UserAverageAchievement> GetByUserId(int Id)
+    public async Task<UserAchievementLevelDto> GetByUserId(int Id)
     {
-        throw new NotImplementedException("This method is not implemented yet.");
+        return await GetUserAchievementLevelDto(Id);
     }
 
     private async Task<List<CalculatedUserAchievementForGame>> GetAchievementsForUser(int userId)
@@ -54,6 +45,7 @@ public class UsersService : IUsersService
 
         foreach (var game in userLibrary.OwnedGames)
         {
+            // get user achievements for each game
             var userGameAchivs = await _apiClient.GetUserGameAchievements(userId, game.Id);
             int achievementPercentage = CalculateAchievementPercentage(
                 userGameAchivs.TotalCompletedAchievements,
@@ -92,5 +84,25 @@ public class UsersService : IUsersService
             AverageAchievementPercentage = averageAchievementPercentage,
             UserGameAchievements = userGameAchievements,
         };
+    }
+
+    private async Task<UserAchievementLevelDto> GetUserAchievementLevelDto(int userId)
+    {
+        var user = await _apiClient.GetUserById(userId);
+        if (user.Id <= 0)
+        {
+            return new UserAchievementLevelDto(0, "0");
+        }
+
+        var userAchievements = await GetAchievementsForUser(user.Id);
+        if (userAchievements.Count == 0)
+        {
+            return new UserAchievementLevelDto(user.Id, "0");
+        }
+
+        return new UserAchievementLevelDto(
+            user.Id,
+            CalculateUserAverageAchievement(userAchievements).Level.ToString()
+        );
     }
 }
