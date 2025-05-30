@@ -6,15 +6,15 @@ namespace User.Achievements.API.Services;
 public interface IUsersService
 {
     /// <summary>
-    /// Gets all users.
+    /// Gets all users and calculates their account achievement level.
     /// </summary>
-    /// <returns>A list of User objects representing all users.</returns>
+    /// <returns>A list of UserAchievementLevelDto containing user IDs and their account achievement level.</returns>
     Task<List<UserAchievementLevelDto>> GetAllUsers();
 
     /// <summary>
-    /// Gets a user by their ID.
+    /// Gets a user by their ID and calculates their account achievement level.
     /// </summary>
     /// <param name="id">The ID of the user to retrieve.</param>
-    /// <returns>A User object representing the user with the specified ID.</returns>
-    Task<UserAverageAchievement> GetByUserId(int id);
+    /// <returns>A UserAchievementLevelDto containing a user ID and their account achievement level.</returns>
+    Task<UserAchievementLevelDto> GetByUserId(int id);
 }
