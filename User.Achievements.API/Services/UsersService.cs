@@ -7,10 +7,10 @@ using User.Achievements.API.Models.DTOs;
 
 public class UsersService : IUsersService
 {
-    private readonly UserApiClient _apiClient;
+    private readonly IUserApiClient _apiClient;
     private readonly ILogger<UsersService> _logger;
 
-    public UsersService(UserApiClient apiClient, ILogger<UsersService> logger)
+    public UsersService(IUserApiClient apiClient, ILogger<UsersService> logger)
     {
         _apiClient = apiClient;
         _logger = logger;
@@ -47,6 +47,7 @@ public class UsersService : IUsersService
         {
             // get user achievements for each game
             var userGameAchivs = await _apiClient.GetUserGameAchievements(userId, game.Id);
+            // calculate compelted achievements percentage for game
             int achievementPercentage = CalculateAchievementPercentage(
                 userGameAchivs.TotalCompletedAchievements,
                 userGameAchivs.Game.TotalAvailableAchievements

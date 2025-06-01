@@ -5,7 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using User.Achievements.API.Models;
 
-public class UserApiClient
+public class UserApiClient : IUserApiClient
 {
     private readonly HttpClient _httpClient;
     private readonly ILogger<UserApiClient> _logger;
