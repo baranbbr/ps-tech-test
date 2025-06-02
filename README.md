@@ -34,3 +34,4 @@
 
 1. Pagination/lazy loading/caching on the API, especially the collective `GetAll...` methods to improve performance.
 2. Walking around game with three.js, some kind of coin collecting game in a house?
+3. Unit tests for frontend - using Cucumber and Cypress?

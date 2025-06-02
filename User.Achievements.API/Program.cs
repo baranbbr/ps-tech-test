@@ -17,14 +17,14 @@ builder.Services.AddLogging(logging =>
 });
 
 builder.Services.AddControllers();
+var corsOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()!;
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
         "AllowFrontend",
         policy =>
         {
-            // TODO: move to config
-            policy.WithOrigins("http://localhost:5173");
+            policy.WithOrigins(corsOrigins).AllowAnyHeader().AllowAnyMethod();
         }
     );
 });
