@@ -25,5 +25,5 @@
 
 ## Random Ideas
 
-1. Pagination/lazy loading on the API to improve performance
+1. Pagination/lazy loading/caching on the API, especially the collective `GetAll...` methods to improve performance.
 2. Walking around game with three.js, some kind of coin collecting game in a house?
