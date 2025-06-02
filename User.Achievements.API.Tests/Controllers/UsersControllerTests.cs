@@ -18,7 +18,7 @@ public class ControllerTests
         _loggerMock = new Mock<ILogger<UsersController>>();
         _usersServiceMock = new Mock<IUsersService>();
 
-        _usersServiceMock.Setup(x => x.GetAllUsers())
+        _usersServiceMock.Setup(x => x.GetAllUsersAsync())
             .ReturnsAsync(new List<UserAchievementLevelDto>() {
                 new(1, "John", "Bronze"),
                 new(2, "Sarah", "Gold")
@@ -31,7 +31,7 @@ public class ControllerTests
     public async Task GetAllUsers_Returns_NoContent_When_No_Users_Exist()
     {
         // Arrange
-        _usersServiceMock.Setup(x => x.GetAllUsers()).ReturnsAsync(new List<UserAchievementLevelDto>());
+        _usersServiceMock.Setup(x => x.GetAllUsersAsync()).ReturnsAsync(new List<UserAchievementLevelDto>());
 
         // Act
         var result = await _controller.GetAllUsers();
@@ -60,7 +60,7 @@ public class ControllerTests
             new UserAchievementLevelDto(1, "Luca", "Bronze"),
             new UserAchievementLevelDto(2, "Tom", "Gold")
         };
-        _usersServiceMock.Setup(x => x.GetAllUsers()).ReturnsAsync(expectedUsers);
+        _usersServiceMock.Setup(x => x.GetAllUsersAsync()).ReturnsAsync(expectedUsers);
 
         // Act
         var result = await _controller.GetAllUsers();
@@ -77,7 +77,7 @@ public class ControllerTests
         // Arrange
         var userId = 1;
         var expectedUser = new UserAchievementLevelDto(userId, "Tom", "Bronze");
-        _usersServiceMock.Setup(x => x.GetByUserId(userId)).ReturnsAsync(expectedUser);
+        _usersServiceMock.Setup(x => x.GetByUserIdAsync(userId)).ReturnsAsync(expectedUser);
 
         // Act
         var result = await _controller.GetByUserId(userId);
@@ -103,7 +103,7 @@ public class ControllerTests
     {
         // Arrange
         var userId = 999; // Assuming this user does not exist
-        _usersServiceMock.Setup(x => x.GetByUserId(userId)).ReturnsAsync(new UserAchievementLevelDto(0, string.Empty, string.Empty));
+        _usersServiceMock.Setup(x => x.GetByUserIdAsync(userId)).ReturnsAsync(new UserAchievementLevelDto(0, string.Empty, string.Empty));
 
         // Act
         var result = await _controller.GetByUserId(userId);

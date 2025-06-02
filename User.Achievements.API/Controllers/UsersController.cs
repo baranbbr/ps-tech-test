@@ -21,7 +21,7 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> GetByUserId(int id)
     {
         _logger.LogInformation("Request received to get user by ID: {id}", id);
-        var user = await _usersService.GetByUserId(id);
+        var user = await _usersService.GetByUserIdAsync(id);
         if (user.UserId <= 0)
         {
             return NotFound();
@@ -34,7 +34,7 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> GetAllUsers()
     {
         _logger.LogInformation("Request received to get all users.");
-        var users = await _usersService.GetAllUsers();
+        var users = await _usersService.GetAllUsersAsync();
         if (users == null || users.Count == 0)
             return NoContent();
         return Ok(users);

@@ -4,8 +4,8 @@ using User.Achievements.API.Models;
 
 public interface IUserApiClient
 {
-    Task<List<User>> GetAllUsers();
-    Task<User> GetUserById(int Id);
-    Task<UsersLibrary> GetUsersLibrary(int userId);
-    Task<UserAchievements> GetUserGameAchievements(int userId, int gameId);
+    Task<List<User>> GetAllUsersAsync();
+    Task<User> GetUserByIdAsync(int Id);
+    Task<UsersLibrary> GetUsersLibraryAsync(int userId);
+    Task<UserAchievements> GetUserGameAchievementsAsync(int userId, int gameId);
 }

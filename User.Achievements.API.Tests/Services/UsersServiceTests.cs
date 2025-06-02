@@ -55,16 +55,16 @@ public class UsersServiceTests
         };
 
         // Setup mock responses for the IUserApiClient methods
-        _userApiClientMock.Setup(x => x.GetAllUsers())
+        _userApiClientMock.Setup(x => x.GetAllUsersAsync())
             .ReturnsAsync(() => new List<User>() { _user });
 
-        _userApiClientMock.Setup(x => x.GetUserById(It.IsAny<int>()))
+        _userApiClientMock.Setup(x => x.GetUserByIdAsync(It.IsAny<int>()))
             .ReturnsAsync(() => _user);
 
-        _userApiClientMock.Setup(x => x.GetUsersLibrary(It.IsAny<int>()))
+        _userApiClientMock.Setup(x => x.GetUsersLibraryAsync(It.IsAny<int>()))
             .ReturnsAsync(() => _usersLibrary);
 
-        _userApiClientMock.Setup(x => x.GetUserGameAchievements(It.IsAny<int>(), It.IsAny<int>()))
+        _userApiClientMock.Setup(x => x.GetUserGameAchievementsAsync(It.IsAny<int>(), It.IsAny<int>()))
             .ReturnsAsync(() => _userAchievements);
     }
 
@@ -72,14 +72,14 @@ public class UsersServiceTests
     public async Task GetAllUsers_Returns_EmptyList_When_ApiReturnsEmptyList()
     {
         // Arrange
-        _userApiClientMock.Setup(x => x.GetAllUsers()).ReturnsAsync(new List<User>());
+        _userApiClientMock.Setup(x => x.GetAllUsersAsync()).ReturnsAsync(new List<User>());
 
         // Act
-        var result = await _usersService.GetAllUsers();
+        var result = await _usersService.GetAllUsersAsync();
 
         // Assert
         Assert.Empty(result);
-        _userApiClientMock.Verify(x => x.GetAllUsers(), Times.Once);
+        _userApiClientMock.Verify(x => x.GetAllUsersAsync(), Times.Once);
     }
 
     [Fact]
@@ -92,12 +92,12 @@ public class UsersServiceTests
         };
 
         // Act
-        var result = await _usersService.GetAllUsers();
+        var result = await _usersService.GetAllUsersAsync();
 
         // Assert
         Assert.Single(result);
         Assert.Equal(expectedDtos.First(), result.First());
-        _userApiClientMock.Verify(x => x.GetAllUsers(), Times.Once);
+        _userApiClientMock.Verify(x => x.GetAllUsersAsync(), Times.Once);
     }
 
     [Theory]
@@ -125,7 +125,7 @@ public class UsersServiceTests
 
 
         // Act
-        var result = await _usersService.GetByUserId(_user.Id);
+        var result = await _usersService.GetByUserIdAsync(_user.Id);
 
         // Assert
         Assert.NotNull(result);

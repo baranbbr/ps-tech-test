@@ -16,9 +16,9 @@ public class UsersService : IUsersService
         _logger = logger;
     }
 
-    public async Task<List<UserAchievementLevelDto>> GetAllUsers()
+    public async Task<List<UserAchievementLevelDto>> GetAllUsersAsync()
     {
-        var users = await _apiClient.GetAllUsers();
+        var users = await _apiClient.GetAllUsersAsync();
         var result = new List<UserAchievementLevelDto>();
 
         foreach (var user in users)
@@ -33,20 +33,20 @@ public class UsersService : IUsersService
         return result;
     }
 
-    public async Task<UserAchievementLevelDto> GetByUserId(int Id)
+    public async Task<UserAchievementLevelDto> GetByUserIdAsync(int Id)
     {
         return await GetUserAchievementLevelDto(Id);
     }
 
     private async Task<List<CalculatedUserAchievementForGame>> GetAchievementsForUser(int userId)
     {
-        var userLibrary = await _apiClient.GetUsersLibrary(userId);
+        var userLibrary = await _apiClient.GetUsersLibraryAsync(userId);
         var achievements = new List<CalculatedUserAchievementForGame>();
 
         foreach (var game in userLibrary.OwnedGames)
         {
             // get user achievements for each game
-            var userGameAchivs = await _apiClient.GetUserGameAchievements(userId, game.Id);
+            var userGameAchivs = await _apiClient.GetUserGameAchievementsAsync(userId, game.Id);
             // calculate compelted achievements percentage for game
             int achievementPercentage = CalculateAchievementPercentage(
                 userGameAchivs.TotalCompletedAchievements,
@@ -89,7 +89,7 @@ public class UsersService : IUsersService
 
     private async Task<UserAchievementLevelDto> GetUserAchievementLevelDto(int userId)
     {
-        var user = await _apiClient.GetUserById(userId);
+        var user = await _apiClient.GetUserByIdAsync(userId);
         if (user.Id <= 0)
         {
             return new UserAchievementLevelDto(0, string.Empty, "0");
