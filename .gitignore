@@ -1,6 +1,5 @@
-.DS_Store
-# Created by https://www.toptal.com/developers/gitignore/api/csharp,aspnetcore
-# Edit at https://www.toptal.com/developers/gitignore?templates=csharp,aspnetcore
+# Created by https://www.toptal.com/developers/gitignore/api/react,csharp,aspnetcore
+# Edit at https://www.toptal.com/developers/gitignore?templates=react,csharp,aspnetcore
 
 ### ASPNETCore ###
 ## Ignore Visual Studio temporary files, build results, and
@@ -524,4 +523,19 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 
-# End of https://www.toptal.com/developers/gitignore/api/csharp,aspnetcore
+### react ###
+.DS_*
+logs
+**/*.backup.*
+**/*.back.*
+
+node_modules
+bower_components
+
+*.sublime*
+
+psd
+thumb
+sketch
+
+# End of https://www.toptal.com/developers/gitignore/api/react,csharp,aspnetcore

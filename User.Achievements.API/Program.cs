@@ -4,7 +4,7 @@ using User.Achievements.API.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddTransient<IUsersService, UsersService>();
-builder.Services.AddHttpClient<UserApiClient>(client =>
+builder.Services.AddHttpClient<IUserApiClient, UserApiClient>(client =>
 {
     client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("UsersApiBaseUrl")!);
 });
@@ -17,6 +17,17 @@ builder.Services.AddLogging(logging =>
 });
 
 builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "AllowFrontend",
+        policy =>
+        {
+            // TODO: move to config
+            policy.WithOrigins("http://localhost:5173");
+        }
+    );
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -32,6 +43,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowFrontend");
 
 app.UseAuthorization();
 
