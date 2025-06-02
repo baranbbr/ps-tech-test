@@ -62,7 +62,7 @@ public class UserApiClientTests
         _httpStatusCodeResponse = HttpStatusCode.OK;
 
         // Act
-        var result = await _userApiClient.GetAllUsers();
+        var result = await _userApiClient.GetAllUsersAsync();
 
         // Assert
         Assert.Equal(expectedListOfUsers.Count, result.Count);
@@ -79,7 +79,7 @@ public class UserApiClientTests
         _httpStatusCodeResponse = HttpStatusCode.OK;
 
         // Act
-        var result = await _userApiClient.GetUserById(1);
+        var result = await _userApiClient.GetUserByIdAsync(1);
 
         // Assert
         Assert.Equal(expectedUser, result);

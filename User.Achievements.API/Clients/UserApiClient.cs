@@ -21,7 +21,7 @@ public class UserApiClient : IUserApiClient
         _logger = logger;
     }
 
-    public async Task<List<User>> GetAllUsers()
+    public async Task<List<User>> GetAllUsersAsync()
     {
         try
         {
@@ -45,7 +45,7 @@ public class UserApiClient : IUserApiClient
         }
     }
 
-    public async Task<User> GetUserById(int Id)
+    public async Task<User> GetUserByIdAsync(int Id)
     {
         User user = new();
         try
@@ -69,7 +69,7 @@ public class UserApiClient : IUserApiClient
         }
     }
 
-    public async Task<UsersLibrary> GetUsersLibrary(int userId)
+    public async Task<UsersLibrary> GetUsersLibraryAsync(int userId)
     {
         try
         {
@@ -97,7 +97,7 @@ public class UserApiClient : IUserApiClient
         }
     }
 
-    public async Task<UserAchievements> GetUserGameAchievements(int userId, int gameId)
+    public async Task<UserAchievements> GetUserGameAchievementsAsync(int userId, int gameId)
     {
         try
         {
