@@ -10,10 +10,12 @@
 
 ### Achievement levels
 
-Bronze = owns > 10 games
-Silver = owns >= 10 games + 75% achivements in each
-Gold = owns >= 25 games + 80% achievements in each
-Platinum = owns >= 50 games + 100% achievements in each
+| Level    | Description                                      |
+| -------- | ------------------------------------------------ |
+| Bronze   | owns > 10 games                                  |
+| Silver   | owns >= 10 games and >= 75% achivements in each  |
+| Gold     | owns >= 25 games and >= 80% achievements in each |
+| Platinum | owns >= 50 games and 100% achievements in each   |
 
 ## Design decisions
 
