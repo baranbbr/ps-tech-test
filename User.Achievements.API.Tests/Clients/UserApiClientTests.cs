@@ -8,7 +8,6 @@ using Moq.Protected;
 using User.Achievements.API.Clients;
 using User.Achievements.API.Models;
 
-
 public class UserApiClientTests
 {
     private readonly Mock<ILogger<UserApiClient>> _loggerMock;
@@ -85,3 +84,4 @@ public class UserApiClientTests
         // Assert
         Assert.Equal(expectedUser, result);
     }
+}

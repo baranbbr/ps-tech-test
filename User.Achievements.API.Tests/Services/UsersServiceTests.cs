@@ -1,4 +1,4 @@
-namespace User.Achievements.API.Tests.Services.Tests;
+namespace User.Achievements.API.Tests.Services;
 
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -69,7 +69,7 @@ public class UsersServiceTests
     }
 
     [Fact]
-    public async Task GetAllUsers_ReturnsEmptyList_When_ApiReturnsEmptyList()
+    public async Task GetAllUsers_Returns_EmptyList_When_ApiReturnsEmptyList()
     {
         // Arrange
         _userApiClientMock.Setup(x => x.GetAllUsers()).ReturnsAsync(new List<User>());
@@ -83,12 +83,12 @@ public class UsersServiceTests
     }
 
     [Fact]
-    public async Task GetAllUsers_ReturnsUsers_WhenApiReturnsUsers()
+    public async Task GetAllUsers_Returns_Users_WhenApiReturnsUsers()
     {
         // Arrange
         var expectedDtos = new List<UserAchievementLevelDto>
         {
-            new UserAchievementLevelDto(_user.Id, "None")
+            new UserAchievementLevelDto(_user.Id, _user.Name, "None")
         };
 
         // Act
@@ -96,8 +96,7 @@ public class UsersServiceTests
 
         // Assert
         Assert.Single(result);
-        Assert.Equal(_user.Id, result[0].UserId);
-        Assert.Equal(expectedDtos.First().Level, result[0].Level);
+        Assert.Equal(expectedDtos.First(), result.First());
         _userApiClientMock.Verify(x => x.GetAllUsers(), Times.Once);
     }
 
