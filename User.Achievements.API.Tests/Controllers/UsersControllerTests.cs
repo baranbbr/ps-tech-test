@@ -1,11 +1,11 @@
+namespace User.Achievements.API.Tests.Controllers;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using User.Achievements.API.Controllers;
 using User.Achievements.API.Models.DTOs;
 using User.Achievements.API.Services;
-
-namespace User.Achievements.API.Tests.Controllers.Test;
 
 public class ControllerTests
 {
@@ -20,8 +20,8 @@ public class ControllerTests
 
         _usersServiceMock.Setup(x => x.GetAllUsers())
             .ReturnsAsync(new List<UserAchievementLevelDto>() {
-                new(1, "Bronze"),
-                new(2, "Gold")
+                new(1, "John", "Bronze"),
+                new(2, "Sarah", "Gold")
             });
 
         _controller = new UsersController(_loggerMock.Object, _usersServiceMock.Object);
@@ -57,8 +57,8 @@ public class ControllerTests
         // Arrange
         var expectedUsers = new List<UserAchievementLevelDto>
         {
-            new UserAchievementLevelDto(1, "Bronze"),
-            new UserAchievementLevelDto(2, "Gold")
+            new UserAchievementLevelDto(1, "Luca", "Bronze"),
+            new UserAchievementLevelDto(2, "Tom", "Gold")
         };
         _usersServiceMock.Setup(x => x.GetAllUsers()).ReturnsAsync(expectedUsers);
 
@@ -76,7 +76,7 @@ public class ControllerTests
     {
         // Arrange
         var userId = 1;
-        var expectedUser = new UserAchievementLevelDto(userId, "Bronze");
+        var expectedUser = new UserAchievementLevelDto(userId, "Tom", "Bronze");
         _usersServiceMock.Setup(x => x.GetByUserId(userId)).ReturnsAsync(expectedUser);
 
         // Act
@@ -103,7 +103,7 @@ public class ControllerTests
     {
         // Arrange
         var userId = 999; // Assuming this user does not exist
-        _usersServiceMock.Setup(x => x.GetByUserId(userId)).ReturnsAsync(new UserAchievementLevelDto(0, string.Empty));
+        _usersServiceMock.Setup(x => x.GetByUserId(userId)).ReturnsAsync(new UserAchievementLevelDto(0, string.Empty, string.Empty));
 
         // Act
         var result = await _controller.GetByUserId(userId);

@@ -92,17 +92,18 @@ public class UsersService : IUsersService
         var user = await _apiClient.GetUserById(userId);
         if (user.Id <= 0)
         {
-            return new UserAchievementLevelDto(0, "0");
+            return new UserAchievementLevelDto(0, string.Empty, "0");
         }
 
         var userAchievements = await GetAchievementsForUser(user.Id);
         if (userAchievements.Count == 0)
         {
-            return new UserAchievementLevelDto(user.Id, "0");
+            return new UserAchievementLevelDto(user.Id, user.Name, "0");
         }
 
         return new UserAchievementLevelDto(
             user.Id,
+            user.Name,
             CalculateUserAverageAchievement(userAchievements).Level.ToString()
         );
     }
