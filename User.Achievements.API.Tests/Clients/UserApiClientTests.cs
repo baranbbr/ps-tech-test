@@ -22,7 +22,7 @@ public class UserApiClientTests
         _loggerMock = new Mock<ILogger<UserApiClient>>();
 
         _httpStatusCodeResponse = HttpStatusCode.OK;
-        _stringJsonResponse = "{\"id\": 1, \"name\": \"John Doe\", \"email\": \"johndoe@example.com\"}";
+        _stringJsonResponse = string.Empty;
 
         var handlerMock = new Mock<HttpMessageHandler>();
         handlerMock.Protected()
