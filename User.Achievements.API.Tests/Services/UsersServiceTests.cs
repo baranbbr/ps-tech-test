@@ -6,12 +6,14 @@ using User.Achievements.API.Clients;
 using User.Achievements.API.Services;
 using User.Achievements.API.Models;
 using User.Achievements.API.Models.DTOs;
+using Microsoft.Extensions.Caching.Memory;
 
 public class UsersServiceTests
 {
     private readonly Mock<IUserApiClient> _userApiClientMock;
     private readonly Mock<ILogger<UsersService>> _loggerMock;
     private readonly UsersService _usersService;
+    private readonly IMemoryCache _memoryCache = new MemoryCache(new MemoryCacheOptions());
 
     private readonly User _user;
     private readonly Game _game;
@@ -25,7 +27,8 @@ public class UsersServiceTests
         // Initialize mocks and service
         _userApiClientMock = new Mock<IUserApiClient>();
         _loggerMock = new Mock<ILogger<UsersService>>();
-        _usersService = new UsersService(_userApiClientMock.Object, _loggerMock.Object);
+        
+        _usersService = new UsersService(_userApiClientMock.Object, _loggerMock.Object, _memoryCache);
 
         // Setup mock data for the tests
         _user = new User
