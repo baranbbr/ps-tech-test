@@ -65,7 +65,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ users }) => {
 						}}>
 						<span
 							style={{
-								color: getLevelColor(user.),
+								color: getLevelColor(user.level),
 								fontWeight: 'bold',
 							}}>
 							#{index + 1}

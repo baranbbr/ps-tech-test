@@ -10,6 +10,7 @@ export interface Player {
 	name: string
 	position: [number, number, number]
 	rotation?: number
+	level?: string
 	snakeSegments?: SnakeSegmentType[]
 	color?: string
 }
