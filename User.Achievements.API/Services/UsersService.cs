@@ -1,6 +1,8 @@
 namespace User.Achievements.API.Services;
 
+using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Memory;
 using User.Achievements.API.Clients;
 using User.Achievements.API.Models;
 using User.Achievements.API.Models.DTOs;
@@ -9,15 +11,39 @@ public class UsersService : IUsersService
 {
     private readonly IUserApiClient _apiClient;
     private readonly ILogger<UsersService> _logger;
+    private readonly IMemoryCache _cache;
 
-    public UsersService(IUserApiClient apiClient, ILogger<UsersService> logger)
+    // Cache keys
+    private const string ALL_USERS_CACHE_KEY = "AllUsers";
+    private const string USER_BY_ID_CACHE_KEY = "User_{0}"; // Will be formatted with user ID
+    private const string USER_ACHIEVEMENTS_CACHE_KEY = "UserAchievements_{0}"; // Will be formatted with user ID
+
+    // Cache durations
+    private static readonly TimeSpan ALL_USERS_CACHE_DURATION = TimeSpan.FromMinutes(5);
+    private static readonly TimeSpan USER_CACHE_DURATION = TimeSpan.FromMinutes(2);
+    private static readonly TimeSpan ACHIEVEMENTS_CACHE_DURATION = TimeSpan.FromMinutes(3);
+
+    public UsersService(IUserApiClient apiClient, ILogger<UsersService> logger, IMemoryCache cache)
     {
         _apiClient = apiClient;
         _logger = logger;
+        _cache = cache;
     }
 
     public async Task<List<UserAchievementLevelDto>> GetAllUsersAsync()
     {
+        // Try to get from cache first
+        if (
+            _cache.TryGetValue(ALL_USERS_CACHE_KEY, out List<UserAchievementLevelDto>? cachedResult)
+            && cachedResult != null
+        )
+        {
+            _logger.LogInformation("Retrieved all users from cache.");
+            return cachedResult;
+        }
+
+        // If not in cache, fetch and compute
+        _logger.LogInformation("Cache miss for all users, fetching from API.");
         var users = await _apiClient.GetAllUsersAsync();
         var result = new List<UserAchievementLevelDto>();
 
@@ -30,16 +56,72 @@ public class UsersService : IUsersService
             }
         }
 
+        // Store in cache
+        var cacheOptions = new MemoryCacheEntryOptions()
+            .SetAbsoluteExpiration(ALL_USERS_CACHE_DURATION)
+            .SetPriority(CacheItemPriority.High);
+
+        _cache.Set(ALL_USERS_CACHE_KEY, result, cacheOptions);
+        _logger.LogInformation(
+            "Cached all users data for {duration} minutes.",
+            ALL_USERS_CACHE_DURATION.TotalMinutes
+        );
+
         return result;
     }
 
     public async Task<UserAchievementLevelDto> GetByUserIdAsync(int Id)
     {
-        return await GetUserAchievementLevelDto(Id);
+        // Generate cache key for this specific user
+        string cacheKey = string.Format(USER_BY_ID_CACHE_KEY, Id);
+
+        // Try to get from cache first
+        if (
+            _cache.TryGetValue(cacheKey, out UserAchievementLevelDto? cachedResult)
+            && cachedResult != null
+        )
+        {
+            _logger.LogInformation("Retrieved user {userId} from cache.", Id);
+            return cachedResult;
+        }
+
+        // If not in cache, fetch and compute
+        _logger.LogInformation("Cache miss for user {userId}, fetching from API.", Id);
+        var result = await GetUserAchievementLevelDto(Id);
+
+        // Store in cache
+        var cacheOptions = new MemoryCacheEntryOptions()
+            .SetAbsoluteExpiration(USER_CACHE_DURATION)
+            .SetPriority(CacheItemPriority.Normal);
+
+        _cache.Set(cacheKey, result, cacheOptions);
+
+        return result;
     }
 
     private async Task<List<CalculatedUserAchievementForGame>> GetAchievementsForUser(int userId)
     {
+        // Generate cache key for this user's achievements
+        string cacheKey = string.Format(USER_ACHIEVEMENTS_CACHE_KEY, userId);
+
+        // Try to get from cache first
+        if (
+            _cache.TryGetValue(
+                cacheKey,
+                out List<CalculatedUserAchievementForGame>? cachedAchievements
+            )
+            && cachedAchievements != null
+        )
+        {
+            _logger.LogInformation("Retrieved achievements for user {userId} from cache.", userId);
+            return cachedAchievements;
+        }
+
+        // If not in cache, fetch and compute
+        _logger.LogInformation(
+            "Cache miss for user {userId} achievements, fetching from API.",
+            userId
+        );
         var userLibrary = await _apiClient.GetUsersLibraryAsync(userId);
         var achievements = new List<CalculatedUserAchievementForGame>();
 
@@ -61,6 +143,13 @@ public class UsersService : IUsersService
                 }
             );
         }
+
+        // Store in cache
+        var cacheOptions = new MemoryCacheEntryOptions()
+            .SetAbsoluteExpiration(ACHIEVEMENTS_CACHE_DURATION)
+            .SetPriority(CacheItemPriority.Normal);
+
+        _cache.Set(cacheKey, achievements, cacheOptions);
 
         return achievements;
     }

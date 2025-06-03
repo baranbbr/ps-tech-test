@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using User.Achievements.API.Services;
 
@@ -18,6 +19,11 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [ResponseCache(
+        Duration = 30,
+        Location = ResponseCacheLocation.Any,
+        VaryByQueryKeys = new[] { "id" }
+    )]
     public async Task<IActionResult> GetByUserId(int id)
     {
         _logger.LogInformation("Request received to get user by ID: {id}", id);
@@ -31,6 +37,11 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet]
+    [ResponseCache(
+        Duration = 60,
+        Location = ResponseCacheLocation.Any,
+        VaryByHeader = "Accept-Encoding"
+    )]
     public async Task<IActionResult> GetAllUsers()
     {
         _logger.LogInformation("Request received to get all users.");
