@@ -3,7 +3,7 @@
 ## How to run solution
 
 -   `dotnet run --project User.Achievements.API/User.Achievements.API.csproj` - this will start the API and open Swagger UI at `http://localhost:5041/swagger`.
--   In a separate terminal, from the root directory, run `cd User.Achievements.Web`.
+-   In a separate terminal, from the project root directory, run `cd User.Achievements.Web`.
 -   `npm install` - install dependencies.
 -   `npm run dev` - this will start the frontend
 
