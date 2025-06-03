@@ -18,14 +18,12 @@ builder.Services.AddLogging(logging =>
 
 builder.Services.AddControllers();
 
-// Add response caching with options
 builder.Services.AddResponseCaching(options =>
 {
     options.MaximumBodySize = 1024; // 1 KB
     options.UseCaseSensitivePaths = false;
 });
 
-// Add memory cache for both response caching and in-memory caching in services
 builder.Services.AddMemoryCache();
 
 // Add CORS services
