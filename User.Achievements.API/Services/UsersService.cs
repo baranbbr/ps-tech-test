@@ -32,7 +32,6 @@ public class UsersService : IUsersService
 
     public async Task<List<UserAchievementLevelDto>> GetAllUsersAsync()
     {
-        // Try to get from cache first
         if (
             _cache.TryGetValue(ALL_USERS_CACHE_KEY, out List<UserAchievementLevelDto>? cachedResult)
             && cachedResult != null
@@ -42,7 +41,6 @@ public class UsersService : IUsersService
             return cachedResult;
         }
 
-        // If not in cache, fetch and compute
         _logger.LogInformation("Cache miss for all users, fetching from API.");
         var users = await _apiClient.GetAllUsersAsync();
         var result = new List<UserAchievementLevelDto>();
@@ -56,7 +54,6 @@ public class UsersService : IUsersService
             }
         }
 
-        // Store in cache
         var cacheOptions = new MemoryCacheEntryOptions()
             .SetAbsoluteExpiration(ALL_USERS_CACHE_DURATION)
             .SetPriority(CacheItemPriority.High);
@@ -75,7 +72,6 @@ public class UsersService : IUsersService
         // Generate cache key for this specific user
         string cacheKey = string.Format(USER_BY_ID_CACHE_KEY, Id);
 
-        // Try to get from cache first
         if (
             _cache.TryGetValue(cacheKey, out UserAchievementLevelDto? cachedResult)
             && cachedResult != null
@@ -85,11 +81,9 @@ public class UsersService : IUsersService
             return cachedResult;
         }
 
-        // If not in cache, fetch and compute
         _logger.LogInformation("Cache miss for user {userId}, fetching from API.", Id);
         var result = await GetUserAchievementLevelDto(Id);
 
-        // Store in cache
         var cacheOptions = new MemoryCacheEntryOptions()
             .SetAbsoluteExpiration(USER_CACHE_DURATION)
             .SetPriority(CacheItemPriority.Normal);
@@ -101,10 +95,8 @@ public class UsersService : IUsersService
 
     private async Task<List<CalculatedUserAchievementForGame>> GetAchievementsForUser(int userId)
     {
-        // Generate cache key for this user's achievements
         string cacheKey = string.Format(USER_ACHIEVEMENTS_CACHE_KEY, userId);
 
-        // Try to get from cache first
         if (
             _cache.TryGetValue(
                 cacheKey,
@@ -117,7 +109,6 @@ public class UsersService : IUsersService
             return cachedAchievements;
         }
 
-        // If not in cache, fetch and compute
         _logger.LogInformation(
             "Cache miss for user {userId} achievements, fetching from API.",
             userId
@@ -144,7 +135,6 @@ public class UsersService : IUsersService
             );
         }
 
-        // Store in cache
         var cacheOptions = new MemoryCacheEntryOptions()
             .SetAbsoluteExpiration(ACHIEVEMENTS_CACHE_DURATION)
             .SetPriority(CacheItemPriority.Normal);
