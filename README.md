@@ -1,5 +1,10 @@
 # User Achievements Aggregator Task
 
+## Game demo
+
+![game demo screenshot](./game-demo-screenshot.png)
+[game-demo-video.mov](./game-demo-video.mov)
+
 ## How to run solution
 
 -   `dotnet run --project User.Achievements.API/User.Achievements.API.csproj` - this will start the API and open Swagger UI at `http://localhost:5041/swagger`.
