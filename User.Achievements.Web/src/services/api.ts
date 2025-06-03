@@ -29,8 +29,7 @@ export const userService = {
     searchUsersByUsernameAsync: async (
         username: string
     ): Promise<UserAchievementLevelDto[]> => {
-        // Note: This is a client-side implementation until the API endpoint is available
-        // When API is ready, uncomment the following line:
+        // TODO: this is a client-side implementation until the API endpoint is available
         // const response = await apiClient.get<UserAchievementLevelDto[]>(`/users/search?username=${encodeURIComponent(username)}`)
 
         // For now, we'll fetch all users and filter client-side

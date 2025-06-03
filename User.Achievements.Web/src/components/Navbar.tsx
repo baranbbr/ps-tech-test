@@ -22,19 +22,6 @@ const Navbar = () => {
                         }}>
                         PS ACHIEVEMENTS
                     </Typography>
-                    <Box sx={{ flexGrow: 1, display: 'flex' }}>
-                        <Typography
-                            component={Link}
-                            to="/"
-                            sx={{
-                                mx: 2,
-                                display: 'block',
-                                color: 'white',
-                                textDecoration: 'none',
-                            }}>
-                            Users
-                        </Typography>
-                    </Box>
                 </Toolbar>
             </Container>
         </AppBar>

@@ -26,14 +26,7 @@ import SearchIcon from '@mui/icons-material/Search'
 import PersonIcon from '@mui/icons-material/Person'
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents'
 import { useEffect, useState } from 'react'
-
-// Define colors for achievement levels
-const LEVEL_COLORS: Record<string, string> = {
-    bronze: '#cd7f32',
-    silver: '#c0c0c0',
-    gold: '#ffd700',
-    platinum: '#0070FF', // Brighter, more vibrant blue
-}
+import { LEVEL_COLOURS, getLevelTextColour } from '../constants'
 
 const UserList = () => {
     const {
@@ -62,7 +55,6 @@ const UserList = () => {
         return () => clearTimeout(delayDebounceFn)
     }, [searchInputValue, searchUsers, searchTerm])
 
-    // Calculate statistics
     const calculateStats = () => {
         if (!users || users.length === 0) return { total: 0, levels: {} }
 
@@ -101,7 +93,7 @@ const UserList = () => {
     }
 
     return (
-        <Box sx={{ width: '100%', mb: 4 }}>
+        <Box sx={{ width: '100%', mb: 6, pb: 4 }}>
             <Typography
                 variant="h4"
                 component="h1"
@@ -151,13 +143,10 @@ const UserList = () => {
                                             key={level}
                                             label={`${level}: ${count}`}
                                             sx={{
-                                                bgcolor: LEVEL_COLORS[level],
-                                                color: [
-                                                    'gold',
-                                                    'platinum',
-                                                ].includes(level)
-                                                    ? 'black'
-                                                    : 'white',
+                                                bgcolor: LEVEL_COLOURS[level],
+                                                color: getLevelTextColour(
+                                                    level
+                                                ),
                                                 fontWeight: 'bold',
                                                 fontSize: '0.9rem',
                                                 py: 2,
@@ -223,7 +212,18 @@ const UserList = () => {
                     {searchTerm && (
                         <Button
                             variant="outlined"
-                            sx={{ mt: 2 }}
+                            sx={{
+                                mt: 2,
+                                borderColor: '#2196f3',
+                                color: '#2196f3',
+                                '&:hover': {
+                                    borderColor: '#42a5f5',
+                                    bgcolor: 'rgba(33, 150, 243, 0.04)',
+                                    transform: 'translateY(-2px)',
+                                    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+                                },
+                                transition: 'all 0.2s ease-in-out',
+                            }}
                             onClick={() => {
                                 setSearchInputValue('')
                                 searchUsers('')
@@ -259,25 +259,20 @@ const UserList = () => {
                         </TableHead>
                         <TableBody>
                             {filteredUsers.map((user) => (
-                                <TableRow key={user.id} hover>
-                                    <TableCell>{user.id}</TableCell>
+                                <TableRow key={user.userId} hover>
+                                    <TableCell>{user.userId}</TableCell>
                                     <TableCell>{user.name}</TableCell>
                                     <TableCell>
                                         <Chip
                                             label={user.level}
                                             sx={{
                                                 bgcolor:
-                                                    LEVEL_COLORS[
+                                                    LEVEL_COLOURS[
                                                         user.level.toLowerCase()
                                                     ],
-                                                color: [
-                                                    'gold',
-                                                    'platinum',
-                                                ].includes(
-                                                    user.level.toLowerCase()
-                                                )
-                                                    ? 'black'
-                                                    : 'white',
+                                                color: getLevelTextColour(
+                                                    user.level
+                                                ),
                                                 fontWeight: 'bold',
                                             }}
                                         />
@@ -288,7 +283,19 @@ const UserList = () => {
                                             to={`/users/${user.userId}`}
                                             variant="contained"
                                             size="small"
-                                            sx={{ borderRadius: 2 }}>
+                                            sx={{
+                                                borderRadius: 2,
+                                                bgcolor: '#2196f3',
+                                                '&:hover': {
+                                                    bgcolor: '#42a5f5',
+                                                    transform:
+                                                        'translateY(-2px)',
+                                                    boxShadow:
+                                                        '0 4px 8px rgba(0,0,0,0.2)',
+                                                },
+                                                transition:
+                                                    'all 0.2s ease-in-out',
+                                            }}>
                                             View Details
                                         </Button>
                                     </TableCell>

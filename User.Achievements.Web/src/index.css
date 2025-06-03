@@ -25,5 +25,6 @@ a {
     text-decoration: inherit;
 }
 a:hover {
-    color: #0055a5;
+    color: #0078e7;
+    text-decoration: underline;
 }
