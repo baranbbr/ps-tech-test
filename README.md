@@ -2,6 +2,7 @@
 
 ## Demo video of game
 
+![game demo screenshot](./game-demo-screenshot.png)
 [game-demo-video.mov](./game-demo-video.mov)
 
 ## How to run solution
