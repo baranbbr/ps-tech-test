@@ -259,8 +259,8 @@ const UserList = () => {
                         </TableHead>
                         <TableBody>
                             {filteredUsers.map((user) => (
-                                <TableRow key={user.userId} hover>
-                                    <TableCell>{user.userId}</TableCell>
+                                <TableRow key={user.id} hover>
+                                    <TableCell>{user.id}</TableCell>
                                     <TableCell>{user.name}</TableCell>
                                     <TableCell>
                                         <Chip

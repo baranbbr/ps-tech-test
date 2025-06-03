@@ -1,7 +1,9 @@
 import axios from 'axios'
 import { UserAchievementLevelDto } from '../types'
 
-const API_URL = import.meta.env.VITE_API_URL
+// Use import.meta.env in development/production, fallback to process.env in tests
+// jest tests do not recognise Vite specific "import.meta.env"
+const API_URL = import.meta.env.VITE_API_URL || process.env.VITE_API_URL
 
 const apiClient = axios.create({
     baseURL: API_URL,
