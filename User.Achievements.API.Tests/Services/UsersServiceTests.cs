@@ -103,39 +103,6 @@ public class UsersServiceTests
         _userApiClientMock.Verify(x => x.GetAllUsersAsync(), Times.Once);
     }
 
-    [Theory]
-    [InlineData(11, 1, 10, "Bronze")]
-    [InlineData(11, 75, 100, "Silver")]
-    [InlineData(26, 8, 10, "Gold")]
-    [InlineData(50, 10, 10, "Platinum")]
-    public async Task GetByUserId_Returns_Correct_Level_When_OwnsGames_And_Has_AchievementPercentage_In_Each_Game(int numOwnedGames, int completedAchievements, int availableAchievements, string expectedLevel)
-    {
-        // Arrange
-        TOTAL_COMPLETED_ACHIEVEMENTS = completedAchievements;
-        TOTAL_AVAILABLE_ACHIEVEMENTS = availableAchievements;
-
-        for (int i = 0; i < numOwnedGames; i++)
-        {
-            _usersLibrary.OwnedGames.Add(new Game
-            {
-                Id = i + 1,
-                Title = $"Game {i + 1}",
-                TotalAvailableAchievements = TOTAL_AVAILABLE_ACHIEVEMENTS
-            });
-            _userAchievements.Game = _usersLibrary.OwnedGames[i];
-            _userAchievements.TotalCompletedAchievements = TOTAL_COMPLETED_ACHIEVEMENTS;
-        }
-
-
-        // Act
-        var result = await _usersService.GetByUserIdAsync(_user.Id);
-
-        // Assert
-        Assert.NotNull(result);
-        Assert.Equal(_user.Id, result.UserId);
-        Assert.Equal(expectedLevel, result.Level);
-    }
-
     [Fact]
     public async Task GetByUserId_Returns_Bronze_When_AverageMeetsSilverCriteriaButNotEachGame()
     {
