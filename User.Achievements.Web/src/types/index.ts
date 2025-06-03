@@ -1,5 +1,8 @@
 export interface UserAchievementLevelDto {
-    userId: number
+    id: number
+    userId?: number
     name: string
     level: string
+    points: number
+    nextLevelPoints: number
 }
