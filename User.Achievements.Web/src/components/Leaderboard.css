@@ -1,0 +1,45 @@
+.leaderboard-container {
+	position: absolute;
+	top: 24px;
+	right: 24px;
+	width: 240px;
+	background: rgba(30, 32, 36, 0.96);
+	border-radius: 12px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+	padding: 18px 20px 12px 20px;
+	z-index: 1000;
+	color: #f3f3f3;
+	font-family: 'Segoe UI', Arial, sans-serif;
+}
+.leaderboard-container h3 {
+	margin: 0 0 12px 0;
+	font-size: 1.2rem;
+	font-weight: 600;
+	text-align: center;
+}
+.leaderboard-list {
+	list-style: decimal inside;
+	padding: 0;
+	margin: 0;
+}
+.leaderboard-list li {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 7px;
+	padding: 5px 0;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+	font-size: 1rem;
+}
+.leaderboard-list li:last-child {
+	border-bottom: none;
+}
+.leaderboard-name {
+	font-weight: 500;
+}
+.leaderboard-level {
+	font-size: 0.95em;
+	font-weight: 400;
+	opacity: 0.85;
+	margin-left: 8px;
+}
