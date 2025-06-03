@@ -155,13 +155,9 @@ public class UsersService : IUsersService
         List<CalculatedUserAchievementForGame> userGameAchievements
     )
     {
-        var averageAchievementPercentage = (int)
-            userGameAchievements.Average(x => x.AchievementPercentage);
-
         return new UserAverageAchievement
         {
             UserId = userGameAchievements.First().UserId,
-            AverageAchievementPercentage = averageAchievementPercentage,
             UserGameAchievements = userGameAchievements,
         };
     }

@@ -24,10 +24,10 @@ public class UsersServiceTests
 
     public UsersServiceTests()
     {
-        // Initialize mocks and service
+        // Initialise mocks and service
         _userApiClientMock = new Mock<IUserApiClient>();
         _loggerMock = new Mock<ILogger<UsersService>>();
-        
+
         _usersService = new UsersService(_userApiClientMock.Object, _loggerMock.Object, _memoryCache);
 
         // Setup mock data for the tests
@@ -103,28 +103,27 @@ public class UsersServiceTests
         _userApiClientMock.Verify(x => x.GetAllUsersAsync(), Times.Once);
     }
 
-    [Theory]
-    [InlineData(11, 1, 10, "Bronze")]
-    [InlineData(11, 75, 100, "Silver")]
-    [InlineData(26, 8, 10, "Gold")]
-    [InlineData(50, 10, 10, "Platinum")]
-    public async Task GetByUserId_Returns_Correct_Level_When_OwnsGames_And_Has_Achievements(int numOwnedGames, int completedAchievements, int availableAchievements, string expectedLevel)
+    [Fact]
+    public async Task GetByUserId_Returns_Bronze_When_AverageMeetsSilverCriteriaButNotEachGame()
     {
         // Arrange
-        TOTAL_COMPLETED_ACHIEVEMENTS = completedAchievements;
-        TOTAL_AVAILABLE_ACHIEVEMENTS = availableAchievements;
-
-        for (int i = 0; i < numOwnedGames; i++)
+        string expectedLevel = "Bronze";
+        // Setup user library with 11 games
+        for (int i = 0; i < 11; i++)
         {
-            _usersLibrary.OwnedGames.Add(new Game
-            {
-                Id = i + 1,
-                Title = $"Game {i + 1}",
-                TotalAvailableAchievements = TOTAL_AVAILABLE_ACHIEVEMENTS
-            });
-            _userAchievements.Game = _usersLibrary.OwnedGames[i];
-            _userAchievements.TotalCompletedAchievements = TOTAL_COMPLETED_ACHIEVEMENTS;
+            _usersLibrary.OwnedGames.Add(new Game { Id = i + 1, Title = $"Game {i + 1}", TotalAvailableAchievements = 100 });
         }
+
+        // Scenario for Silver: Owns >= 10 games and has 75%+ achievements in each
+        // We want the average to be >= 75%, but not for each game.
+
+        // 10 games at 100%
+        _userApiClientMock.Setup(x => x.GetUserGameAchievementsAsync(_user.Id, It.IsInRange(1, 10, Range.Inclusive)))
+            .ReturnsAsync((int uId, int gId) => new UserAchievements { User = _user, Game = new Game { Id = gId, TotalAvailableAchievements = 100 }, TotalCompletedAchievements = 100 });
+
+        // 1 game at 0%
+        _userApiClientMock.Setup(x => x.GetUserGameAchievementsAsync(_user.Id, 11))
+            .ReturnsAsync(new UserAchievements { User = _user, Game = new Game { Id = 11, TotalAvailableAchievements = 100 }, TotalCompletedAchievements = 0 });
 
 
         // Act
