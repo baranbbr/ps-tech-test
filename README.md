@@ -1,5 +1,12 @@
 # User Achievements Aggregator Task
 
+## How to run solution
+
+-   `dotnet run --project User.Achievements.API/User.Achievements.API.csproj` - this will start the API and open Swagger UI at `http://localhost:5041/swagger`.
+-   In a separate terminal, from the project root directory, run `cd User.Achievements.Web`.
+-   `npm install` - install dependencies.
+-   `npm run dev` - this will start the frontend
+
 ## Required info to calculate account achievement level:
 
 -   Get all users (need IDs).
@@ -23,7 +30,8 @@
 
 -   `API > Services > UsersService > CalculateAchievementPercentage` - casting to float within the division to calculate average game achievement completion as the division will not always be integer. Then converting back to integer after multiplying by 100.
 
-## Random Ideas
+## Random ideas
 
 1. Pagination/lazy loading/caching on the API, especially the collective `GetAll...` methods to improve performance.
 2. Walking around game with three.js, some kind of coin collecting game in a house?
+3. Unit tests for frontend - using Cucumber and Cypress?

@@ -17,6 +17,17 @@ builder.Services.AddLogging(logging =>
 });
 
 builder.Services.AddControllers();
+var corsOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()!;
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "AllowFrontend",
+        policy =>
+        {
+            policy.WithOrigins(corsOrigins).AllowAnyHeader().AllowAnyMethod();
+        }
+    );
+});
 
 builder.Services.AddResponseCaching(options =>
 {
@@ -25,19 +36,6 @@ builder.Services.AddResponseCaching(options =>
 });
 
 builder.Services.AddMemoryCache();
-
-// Add CORS services
-var corsOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()!;
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(
-        "AllowFrontend",
-        builder =>
-        {
-            builder.WithOrigins(corsOrigins).AllowAnyHeader().AllowAnyMethod();
-        }
-    );
-});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -59,6 +57,8 @@ app.UseCors("AllowFrontend");
 app.UseResponseCaching();
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowFrontend");
 
 app.UseAuthorization();
 
