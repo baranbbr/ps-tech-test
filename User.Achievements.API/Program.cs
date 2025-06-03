@@ -28,6 +28,7 @@ builder.Services.AddResponseCaching(options =>
 // Add memory cache for both response caching and in-memory caching in services
 builder.Services.AddMemoryCache();
 
+var corsOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()!;
 // Add CORS services
 builder.Services.AddCors(options =>
 {
@@ -35,7 +36,7 @@ builder.Services.AddCors(options =>
         "AllowFrontend",
         builder =>
         {
-            builder.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod();
+            builder.WithOrigins(corsOrigins).AllowAnyHeader().AllowAnyMethod();
         }
     );
 });
