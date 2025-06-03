@@ -95,6 +95,7 @@ const Game: React.FC = () => {
 			// Transform users into players with random positions
 			const players: PlayerType[] = users.map((user) => ({
 				...user,
+				userId: user.id,
 				level: user.level.toString(),
 				position: [
 					Math.floor(Math.random() * GRID_SIZE) - GRID_SIZE / 2,

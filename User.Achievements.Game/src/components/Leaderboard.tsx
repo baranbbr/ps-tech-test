@@ -54,7 +54,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ users }) => {
 				}}>
 				{sortedUsers.map((user, index) => (
 					<div
-						key={user.id}
+						key={user.userId}
 						style={{
 							display: 'flex',
 							alignItems: 'center',

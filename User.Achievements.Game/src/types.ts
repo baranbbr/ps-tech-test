@@ -6,11 +6,11 @@ export interface SnakeSegmentType {
 }
 
 export interface Player {
-	id: string
+	userId: string
 	name: string
 	position: [number, number, number]
 	rotation?: number
-	level?: string
+	level: string
 	snakeSegments?: SnakeSegmentType[]
 	color?: string
 }
