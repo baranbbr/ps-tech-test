@@ -21,15 +21,15 @@ builder.Services.AddControllers();
 // Add response caching with options
 builder.Services.AddResponseCaching(options =>
 {
-    options.MaximumBodySize = 1024; // 1KB - adjust based on your response size
+    options.MaximumBodySize = 1024; // 1 KB
     options.UseCaseSensitivePaths = false;
 });
 
 // Add memory cache for both response caching and in-memory caching in services
 builder.Services.AddMemoryCache();
 
-var corsOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()!;
 // Add CORS services
+var corsOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()!;
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(

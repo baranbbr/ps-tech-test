@@ -1,6 +1,5 @@
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
 using User.Achievements.API.Services;
 
 namespace User.Achievements.API.Controllers;
@@ -39,8 +38,7 @@ public class UsersController : ControllerBase
     [HttpGet]
     [ResponseCache(
         Duration = 60,
-        Location = ResponseCacheLocation.Any,
-        VaryByHeader = "Accept-Encoding"
+        Location = ResponseCacheLocation.Any
     )]
     public async Task<IActionResult> GetAllUsers()
     {
