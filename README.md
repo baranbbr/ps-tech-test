@@ -1,6 +1,6 @@
 # User Achievements Aggregator Task
 
-## Demo video of game
+## Game demo
 
 ![game demo screenshot](./game-demo-screenshot.png)
 [game-demo-video.mov](./game-demo-video.mov)
