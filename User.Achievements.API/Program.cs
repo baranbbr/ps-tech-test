@@ -37,19 +37,6 @@ builder.Services.AddResponseCaching(options =>
 
 builder.Services.AddMemoryCache();
 
-// Add CORS services
-var corsOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()!;
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(
-        "AllowFrontend",
-        builder =>
-        {
-            builder.WithOrigins(corsOrigins).AllowAnyHeader().AllowAnyMethod();
-        }
-    );
-});
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
