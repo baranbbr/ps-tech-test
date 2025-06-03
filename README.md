@@ -32,6 +32,6 @@
 
 ## Random ideas
 
-1. Pagination/lazy loading/caching on the API, especially the collective `GetAll...` methods to improve performance.
-2. Walking around game with three.js, some kind of coin collecting game in a house?
-3. Unit tests for frontend - using Cucumber and Cypress?
+1. Pagination on the API, especially the collective `GetAll...` methods to improve performance. Caching implemented, this would be a further improvement.
+2. Walking around game with three.js, some kind of coin collecting game in a house? In progress https://github.com/baranbbr/ps-tech-test/pull/4
+3. E2E unit tests for frontend using Cucumber and Cypress. Currently only basic jest tests on UserList.
